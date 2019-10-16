@@ -1,5 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template, flash, request
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 app = Flask(__name__)
+title = " | Food"
+
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 
 
@@ -7,7 +14,11 @@ app = Flask(__name__)
 # CRUD MENU
 @app.route("/account/menu/create")
 def account_create_menu_form():
-    return "GET CREATE MENU FORM"
+    return render_template(
+    'account/menu_create.html',
+    title = 'Create Menu' + title,
+    menu = {}
+    )
 
 @app.route("/account/menu/create", methods=['POST'])
 def account_create_menu():

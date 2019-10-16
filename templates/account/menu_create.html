@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>{{title}}</title>
+<div class='row'>
+    <div class='col-sm-6 col-sm-offset-3'>
+        <form method='POST' action='/account/menu/create'>
+            <fieldset>
+                <legend>New Menu</legend>
+                {% include 'partials/menu_form.html' %}
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
