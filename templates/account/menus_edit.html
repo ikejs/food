@@ -5,9 +5,9 @@
 <div class='row'>
     {% include 'partials/account_nav.html' %}
     <div class="col-md-6">
-        <form method='POST' action='/account/menu/create'>
+        <form method='POST' action='/account/menu/{{menu._id}}'>
             <fieldset>
-                <legend>New Menu</legend>
+                <legend>Edit {{menu.name}}</legend>
                 {% include 'partials/menu_form.html' %}
             </fieldset>
         </form>

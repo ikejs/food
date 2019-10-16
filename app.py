@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 title = " | Food"
 
 host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/food')
@@ -133,7 +133,9 @@ menus = [
 def account_view_menus():
     return render_template(
     'account/menus.html',
-    menus = menus
+    restaurant = restaurants[0],
+    menus = menus,
+    menu = {}
     )
 
 @app.route("/account/menu/create")
@@ -141,22 +143,33 @@ def account_create_menu_form():
     return render_template(
     'account/menus_create.html',
     title = 'Create Menu' + title,
+    restaurant = restaurants[0],
     menu = {}
     )
 
 @app.route("/account/menu/create", methods=['POST'])
 def account_create_menu():
+    categoryLines = request.form.get('categories').split()
+    categories = []
+    for category in categoryLines:
+        category = { "name": category, "_id": ObjectId() }
+        categories.append(category)
     menu = {
         "name": request.form.get('name'),
-        "categories": [],
+        "categories": categories,
         "items": []
     }
     menus.append(menu)
-    return redirect(url_for('account_view_menus', menus=list(menus)))
+    return redirect(url_for('account_view_menus', menus=menus))
 
 @app.route("/account/menu/<menu_id>")
 def account_view_menu(menu_id):
-    return "View/Edit Menu "+menu_id
+    return render_template(
+    'account/menus_edit.html',
+    title = 'Edit ' + menus[0]['name'] + title,
+    restaurant = restaurants[0],
+    menu = menus[0]
+    )
 
 @app.route("/account/menu/<menu_id>", methods=['PUT'])
 def account_edit_menu(menu_id):
