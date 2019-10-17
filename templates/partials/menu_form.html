@@ -1,15 +1,8 @@
 <div class='form-group'>
-    <label for='menu-name'>Menu Name</label><br>
-    <input class='form-control' id='menu-name' type='text' name='name' placeholder="Lunch" value='{{ menu.name }}'/>
-</div>
-<div class='form-group'>
-    <label for='categories'>Categories (one per line)</label><br>
-<textarea class='form-control' id='categories' type='text' name='categories' placeholder="Burgers
-Sides
-Drinks">
-{%if menu['categories']%}{%for category in menu['categories']%}{{ category.name }}
-{%endfor%}{%endif%}</textarea>
+    <label for='menu-name'>Name</label><br>
+    <input class='form-control' id='menu-name' type='text' name='name' value='{{ menu.name }}'/>
 </div>
 <div class='form-group'>
     <button class='btn btn-primary' type='submit'>Save Menu</button>
+    <a href="/account" onclick="return confirm('Are you sure you want to cancel? The form will be cleared.')">Cancel</a>
 </div>
