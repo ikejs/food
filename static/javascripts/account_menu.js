@@ -46,68 +46,104 @@ function addNewItemOption() {
 
                     </div>
                 </div>
-                <a style="float:right;margin-top:50px;" class="text-danger col-md-1" href="javascript:removeItemOption('${object_id}')"><span class="fa fa-minus-circle"></span></a>
+                <a style="float:right;margin-top:50px;" class="text-danger col-md-1" href="javascript:removeNewItemOption('${object_id}')"><span class="fa fa-minus-circle"></span></a>
             </div>
         `)
     });
 }
 
-function removeItemOption(option_id) {
+function removeNewItemOption(option_id) {
     $("#newItemOptionWrapper_"+option_id).remove();
 }
 
+//ADD SINGLE SELECT VALUE TO NEW ITEM OPTION
 function addNewItemOptionSingleValue(option_id) {
     $.post('/account/getObjectId').done(function(value_id) {
-        $("#newItemOptionBody_"+option_id).prepend(`
-            <div class="row" style="margin-top:20px;" id="newItemOptionValueWrapper_${value_id}">
+        $("#newItemOptionBody_"+option_id).append(`
+            <div class="row" id="newItemOptionValueWrapper_${value_id}">
                 <div class="col-md-1">
-                    <input type="radio" id="newItemOptionSingleValue_${value_id}" name="newItemOptionSingleValue_${value_id}" />
+                    <input type="radio" id="newItemOptionSingleValue_${value_id}" name="newItemOptionSingleValue_${option_id}" />
                 </div>
                 <div class="form-group col-md-6" style="float:left;">
-                    <input class='form-control form-control-sm' id='' type='text' name='' placeholder="Price Name" autocomplete="off" />
+                    <input class='form-control form-control-sm' id='' type='text' name='' placeholder="Value name" autocomplete="off" />
                 </div>
                 <div class='form-group col-md-4' style="float:right;">
-                      <div class="form-group">
-                        <div class="input-group input-group-sm mb-2">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
-                          </div>
-                          <input placeholder="0.00" class="form-control form-control-sm dollarAmount" />
-                        </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-sm mb-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
                       </div>
+                      <input placeholder="0.00" class="form-control form-control-sm dollarAmount" value="0.00" />
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-1" style="float:left;padding-right:0px;">
-                    <a style="float:right;" class="text-danger" href="javascript:removeNewItemOptionSingleValue('${value_id}')"><span class="fa fa-minus-circle"></a>
+                    <a style="float:right;" class="text-danger" href="javascript:removeNewItemOptionValue('${value_id}')"><span class="fa fa-minus-circle"></a>
                 </div>
             </div>
         `);
     });
 }
 
-function removeNewItemOptionSingleValue(valueId) {
+//ADD MULTI SELECT VALUE TO NEW ITEM OPTION
+function addNewItemOptionMultipleValue(option_id) {
+    $.post('/account/getObjectId').done(function(value_id) {
+        $("#newItemOptionBody_"+option_id).append(`
+            <div class="row" id="newItemOptionValueWrapper_${value_id}">
+                <div class="col-md-1">
+                    <input type="checkbox" id="newItemOptionMultipleValue_${value_id}" name="newItemOptionMultipleValue_${value_id}" />
+                </div>
+                <div class="form-group col-md-6" style="float:left;">
+                    <input class='form-control form-control-sm' id='' type='text' name='' placeholder="Value name" autocomplete="off" />
+                </div>
+                <div class='form-group col-md-4' style="float:right;">
+                  <div class="form-group">
+                    <div class="input-group input-group-sm mb-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input placeholder="0.00" class="form-control form-control-sm dollarAmount" value="0.00" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1" style="float:left;padding-right:0px;">
+                    <a style="float:right;" class="text-danger" href="javascript:removeNewItemOptionValue('${value_id}')"><span class="fa fa-minus-circle"></a>
+                </div>
+            </div>
+        `);
+    });
+}
+
+
+function removeNewItemOptionValue(valueId) {
     $("#newItemOptionValueWrapper_"+valueId).remove();
 }
 
 function newItemOptionTypeSingle(option_id) {
     $("#newItemOptionDivider_"+option_id).show();
     $("#newItemOptionSingle_"+option_id).attr('disabled', '')
+    $("#newItemOptionMultiple_"+option_id).removeAttr('disabled')
+    $("#newItemOptionBody_"+option_id).html('');
     $("#newItemOptionBody_"+option_id).append(`
-        <center>
-            <a href="javascript:addNewItemOptionSingleValue('${option_id}')"><small>Add Value</small></a>
-        </center>
+        <p class="lead" style="font-size:14px;">Select One <a href="javascript:addNewItemOptionSingleValue('${option_id}')" style="float:right;"><span class="fa fa-plus"></span></a></p>
+        <hr>
     `)
 }
 
 function newItemOptionTypeMultiple(option_id) {
     $("#newItemOptionDivider_"+option_id).show();
-
+    $("#newItemOptionSingle_"+option_id).removeAttr('disabled')
+    $("#newItemOptionMultiple_"+option_id).attr('disabled', '')
+    $("#newItemOptionBody_"+option_id).html('');
+    $("#newItemOptionBody_"+option_id).append(`
+        <p class="lead" style="font-size:14px;">Select Multiple <a href="javascript:addNewItemOptionMultipleValue('${option_id}')" style="float:right;"><span class="fa fa-plus"></span></a></p>
+        <hr>
+    `)
 }
 
 
 $(function() {
     addItem('5da95a5d0748a9b3f563d06d') //TEST
-    addNewItemOption();
-    addNewItemOption();
     addNewItemOption();
     //
     // $("#multiPricingSwitch").change(function() {
