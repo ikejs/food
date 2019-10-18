@@ -1,3 +1,53 @@
-{%for menu in menus%}
-    {{menu}}<br>
-{%endfor%}
+{% extends 'base.html' %}
+
+{% block content %}
+<title>{{title}}</title>
+<div class='row'>
+    {% include 'partials/account_nav.html' %}
+    <div class="col-md-10">
+        <legend>Menus
+
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="float:right;"><span class="fa fa-plus"></span></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#newItemModal">New Item</a>
+                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#newMenuModal">New Category</a>
+                </div>
+        </legend>
+        <hr>
+        <div class="container">
+          <div class="row">
+              {%for menu in menus%}
+                  <div class="card border-primary col-sm" style="max-width: 20rem;padding:0px;margin:20px;">
+                      <a style="color:white;text-align:center;margin:0px;" href="/account/menu/{{menu._id}}"><div style="background-color:#E95420;"><span class="fa fa-pencil"></span></div></a>
+                      <div class="card-header" style="background-color:white;"><h4 class="card-title" style="text-align:center;margin-top:8px;"><strong><a href="/account/menu/{{menu._id}}">{{menu.label}}</a></strong></h4></div>
+                  </div>
+              {%endfor%}
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW MENU MODAL -->
+<div class="modal fade" id="newMenuModal" tabindex="-1" role="dialog" aria-labelledby="newMenuModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newMenuModalLabel">New Menu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class='form-group'>
+              <label for='menu-name'>Name</label><br>
+              <input class='form-control' id='menu-name' type='text' name='name'/>
+          </div>
+          <div class='form-group'>
+              <button class='btn btn-primary' type='submit'>Save Menu</button>
+              <a href="/account" onclick="return confirm('Are you sure you want to cancel? The form will be cleared.')">Cancel</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
