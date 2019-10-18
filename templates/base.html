@@ -14,6 +14,16 @@
     <script src="/javascripts/bootstrap.min.js"></script>
     {% include 'partials/navbar.html' %}
     <div class="col-md-8 offset-md-2" style="margin-top:30px;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-dismissible alert-fade alert-{%if category == 'success'%}success{%elif category == 'info'%}info{%elif category == 'warning'%}warning{%else%}danger{%endif%}">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{message}}
+                </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </div>
 </body>

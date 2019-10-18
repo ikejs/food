@@ -4,16 +4,6 @@
 <script src="/javascripts/account_menu.js"></script>
 <title>{{title}}</title>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-        <div class="alert alert-dismissible alert-fade alert-{%if category == 'success'%}success{%elif category == 'info'%}info{%elif category == 'warning'%}warning{%else%}danger{%endif%}">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{message}}
-        </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
 <form method="POST" action="/account/menu/{{menu['_id']}}">
     <div class='row'>
         {% include 'partials/account_nav.html' %}
@@ -85,7 +75,14 @@
         </div>
         <div class="col-md-2">
             <button class="btn btn-block form-control-lg btn-outline-primary" type="submit"><span class="fa fa-save"></span> Save Menu</button>
+            <div style="bottom:20px;" class="offset-md-5">
+                <small><a href="javascript:deleteMenu('{{menu._id}}')" class="text-danger">delete</small>
+            </div>
         </div>
     </div>
+</form>
+<form id="deleteMenuForm" action="/account/menus/delete" method="POST">
+    <input name="menuId" value="{{menu['_id']}}" />
+    <button type="submit">DELETE MENU</button>
 </form>
 {% endblock %}

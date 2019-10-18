@@ -134,12 +134,18 @@ restaurants = [
 
 # CRUD MENU
 @app.route("/account/menus")
-def account_view_menu():
+def account_view_menus():
     return render_template(
     'account/menus.html',
     restaurant = restaurants[0],
     menus = menus.find()
     )
+
+@app.route("/account/menus", methods=['POST'])
+def account_add_menu():
+    menus.insert_one({ 'label': request.form.get('menuName') })
+    flash(b'Menu added successfully.', 'success')
+    return redirect(url_for('account_view_menus'))
 
 @app.route("/account/menu/create")
 def account_create_category_form():
@@ -158,7 +164,7 @@ def account_create_menu():
         "items": []
     }
     menus.append(menu)
-    return redirect(url_for('account_view_menu', menu=menus[0]))
+    return redirect(url_for('account_view_menus', menu=menus[0]))
 
 @app.route("/account/menu/<menu_id>")
 def account_get_menu(menu_id):
@@ -182,30 +188,12 @@ def account_edit_menu(menu_id):
     )
     )
 
-@app.route("/account/menu/<menu_id>", methods=['DELETE'])
-def account_delete_menu(menu_id):
-    return "DELETE menu "+menu_id
+@app.route("/account/menus/delete", methods=['POST'])
+def account_delete_menu():
+    menus.delete_one({'_id': ObjectId(request.form.get('menuId')) })
+    flash(u'Menu deleted successfully.', 'info')
+    return redirect(url_for('account_view_menus'))
 
-# CRUD ITEM
-@app.route("/account/item/create")
-def account_create_item_form():
-    return "GET CREATE ITEM FORM"
-
-@app.route("/account/item/create", methods=['POST'])
-def account_create_item():
-    return "POST NEW ITEM"
-
-@app.route("/account/item/<item_id>")
-def account_view_item(item_id):
-    return "View/Edit Item "+item_id
-
-@app.route("/account/item/<item_id>", methods=['PUT'])
-def account_edit_item(item_id):
-    return "PUT Item "+item_id
-
-@app.route("/account/item/<item_id>", methods=['DELETE'])
-def account_delete_item(item_id):
-    return "DELETE Item "+item_id
 
 
 

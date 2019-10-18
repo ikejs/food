@@ -6,7 +6,6 @@
     {% include 'partials/account_nav.html' %}
     <div class="col-md-10">
         <legend>Menus
-
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="float:right;"><span class="fa fa-plus"></span></a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="javascript:document.getElementById('menuName').focus()" data-toggle="modal" data-target="#newMenuModal">New Menu</a>
@@ -18,7 +17,7 @@
               {%for menu in menus%}
                   <div class="card border-primary col-sm" style="max-width: 20rem;padding:0px;margin:20px;">
                       <a style="color:white;text-align:center;margin:0px;" href="/account/menu/{{menu._id}}"><div style="background-color:#E95420;"><span class="fa fa-pencil"></span></div></a>
-                      <div class="card-header" style="background-color:white;"><h4 class="card-title" style="text-align:center;margin-top:8px;"><strong><a href="/account/menu/{{menu._id}}">{{menu.label}}</a></strong></h4></div>
+                      <div class="card-header" style="background-color:white;border:none;"><h4 class="card-title" style="text-align:center;margin-top:8px;"><strong><a href="/account/menu/{{menu._id}}">{{menu.label}}</a></strong></h4></div>
                   </div>
               {%endfor%}
           </div>
