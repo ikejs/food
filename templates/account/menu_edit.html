@@ -32,13 +32,13 @@
                             <span class="fa fa-expand"></span>
                           </button>
                           <div class="form-group col-md-11" style="float:right;">
-                              <input class="form-control" type="text" value="{{category.label}}" name="categoryLabel_{{category._id}}" placeholder="Category Name" autocomplete="off" />
-                              <input class="form-control form-control-sm" type="text" id="categoryDescription_{{category._id}}" name="categoryDescription_{{category._id}}" placeholder="{%if category.label%}{{category.label}} description{%else%}Category description{%endif%}" value="{%if category.description%}{{category.description}}{%endif%}" autocomplete="off" />
+                              <input class="form-control" type="text" value="{{category.label}}" name="categoryLabel_{{category._id}}" id="categoryLabel_{{category._id}}" placeholder="Category Name" autocomplete="off" />
+                              <input class="form-control form-control-sm" type="text" name="categoryDescription_{{category._id}}" id="categoryDescription_{{category._id}}" placeholder="{%if category.label%}{{category.label}} description{%else%}Category description{%endif%}" value="{%if category.description%}{{category.description}}{%endif%}" autocomplete="off" />
                           </div>
                       </h2>
                     </div>
                     <div id="collapseOne_{{category._id}}" class="collapse" aria-labelledby="headingOne_{{category._id}}" data-parent="#categoriesAccordion">
-                        <a href="javascript:addItem({{category._id}})" style="float:right;margin:20px;"><small>add item</small></a>
+                        <a href="javascript:addItem('{{category._id}}')" style="float:right;margin:20px;"><small>add item</small></a>
                         <div class="card-body col-md-9 offset-md-2">
                             <div class="accordion" id="itemsAccordion_{{category._id}}">
                             {%if 'items' in category%}
@@ -47,18 +47,19 @@
                                         <div class="card">
                                             <div class="card-header" id="headingOne_{{item._id}}">
                                               <h2 class="mb-0">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne_{{item._id}}" aria-expanded="true" aria-controls="collapseOne_{{item._id}}">
-                                                  {{item.label}}
-                                                </button>
+                                                  <button onclick="expandButtonToggle({{item._id}})" class="btn btn-link col-md-1" style="float:left;" type="button" data-toggle="collapse" data-target="#collapseOne_{{item._id}}" aria-expanded="true" aria-controls="collapseOne_{{item._id}}">
+                                                    <span class="fa fa-expand"></span>
+                                                  </button>
+                                                  <div class="form-group col-md-11" style="float:right;">
+                                                      <input class="form-control" type="text" value="{{item.label}}" name="itemLabel_{{item._id}}" placeholder="Item Name" autocomplete="off" />
+                                                      <input class="form-control form-control-sm" type="text" name="itemDescription_{{item._id}}" placeholder="{%if item.label%}{{item.label}} description{%else%}Item description{%endif%}" value="{%if item.description%}{{item.description}}{%endif%}" autocomplete="off" />
+                                                  </div>
                                               </h2>
                                             </div>
                                             <div id="collapseOne_{{item._id}}" class="collapse" aria-labelledby="headingOne_{{item._id}}" data-parent="#itemsAccordion_{{category._id}}">
                                                 <div class="card-body">
                                                     <div class="accordion" id="itemsAccordion_{{category._id}}">
-                                                        <div class="form-group">
-                                                            <label class="col-form-label col-form-label-sm" for="itemDescription_{{item._id}}">{{item.label}} description</label>
-                                                            <input class="form-control form-control-sm" type="text" id="itemDescription_{{item._id}}" placeholder="{{item.label}} description" value="{%if 'description' in item%}{%if item.description%}{{item.description}}{%endif%}{%endif%}" autocomplete="off">
-                                                        </div>
+                                                        OPTIONS
                                                     </div>
                                                 </div>
                                             </div>
@@ -112,6 +113,46 @@
               </div>
               <div class='form-group'>
                   <button class='btn btn-outline-primary btn-block' type='submit'>Add Category</button>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- NEW ITEM MODAL -->
+<div class="modal fade" id="newItemModal" tabindex="-1" role="dialog" aria-labelledby="newItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id="newItemModalDialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="newItemModalLabel">New Item<br><small class="text-muted" id="categoryNameForNewItem"></small></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body col-md-12">
+          <form action="/account/menus/newItem" method="POST">
+              <input style="display:none;" name="menuId" value="{{menu._id}}" />
+              <input style="display:none;" name="categoryId" id="categoryIdForNewItem" value="" />
+              <div class='form-group'>
+                  <label required for='item-name'>Name</label><br>
+                  <input class='form-control' id='itemName' type='text' name='itemName' autocomplete="off" />
+              </div>
+              <div class='form-group'>
+                  <label for='menu-name'>Description</label><br>
+                  <textarea class='form-control form-control-sm' id='itemDescription' type='text' name='itemDescription' autocomplete="off"></textarea>
+              </div>
+              <h5 style="margin-top:40px;">Options <a href="javascript:addNewItemOption()" style="float:right;"><span class="fa fa-plus"></span></a></h5>
+              <!-- <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="multiPricingSwitch">
+                  <label class="custom-control-label" for="multiPricingSwitch">Multiple prices</label>
+              </div> -->
+              <div class="col-md-12" id="newItemOptions">
+              </div>
+              <hr>
+              <div class='form-group'>
+                  <button class='btn btn-outline-primary btn-block' type='submit'>Add Item</button>
               </div>
           </form>
       </div>

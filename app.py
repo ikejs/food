@@ -213,6 +213,12 @@ def account_delete_menu():
     flash(u'Menu deleted successfully.', 'info')
     return redirect(url_for('account_view_menus'))
 
+@app.route("/account/getObjectId", methods=['POST'])
+def generate_objectId():
+    object = ObjectId()
+    return str(object)
+
+
 
 
 
