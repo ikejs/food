@@ -3,73 +3,89 @@
 {% block content %}
 <script src="/javascripts/account_menu.js"></script>
 <title>{{title}}</title>
-<div class='row'>
-    {% include 'partials/account_nav.html' %}
-    <div class="col-md-1" style="margin-top:5px;">
-        <a href="/account/menus"><span class="fa fa-arrow-left"></span></a>
-    </div>
-    <div class="col-md-7">
-        <div class="row">
-            <legend style="margin-bottom:-20px;">
-                <div class="form-group">
-                    <input class="form-control form-control-lg" type="text" value="{{menu['label']}}">
-                </div>
-            </legend>
-            <div class="form-group">
-              <label class="col-form-label col-form-label-sm" for="menuDescription"></label>
-              <input class="form-control form-control-sm" type="text" id="menuDescription" placeholder="Menu description" value="{{menu['description']}}">
-            </div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-dismissible alert-fade alert-{%if category == 'success'%}success{%elif category == 'info'%}info{%elif category == 'warning'%}warning{%else%}danger{%endif%}">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{message}}
         </div>
-        <hr>
-        <h3>Categories</h3>
-        <div class="accordion" id="categoriesAccordion">
-            {%for category in menu['categories']%}
-            <div class="card">
-                <div class="card-header" id="headingOne_{{category._id}}">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne_{{category._id}}" aria-expanded="true" aria-controls="collapseOne_{{category._id}}">
-                      {{category.label}}
-                    </button>
-                  </h2>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<form method="POST" action="/account/menu/{{menu['_id']}}">
+    <div class='row'>
+        {% include 'partials/account_nav.html' %}
+        <div class="col-md-1" style="margin-top:5px;">
+            <a href="/account/menus"><span class="fa fa-arrow-left"></span></a>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <legend style="margin-bottom:-20px;">
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" type="text" value="{{menu['label']}}" name="label">
+                    </div>
+                </legend>
+                <div class="form-group">
+                  <label class="col-form-label col-form-label-sm" for="menuDescription"></label>
+                  <input class="form-control form-control-sm" type="text" id="menuDescription" placeholder="Menu description" value="{{menu['description']}}">
                 </div>
-                <div id="collapseOne_{{category._id}}" class="collapse" aria-labelledby="headingOne_{{category._id}}" data-parent="#categoriesAccordion">
-                    <div class="card-body">
-                        <div class="accordion" id="itemsAccordion_{{category._id}}">
-                            <div class="form-group">
-                                <label class="col-form-label col-form-label-sm" for="categoryDescription_{{category._id}}">{{category.label}} description</label>
-                                <input class="form-control form-control-sm" type="text" id="categoryDescription_{{category._id}}" placeholder="{{category.label}} description" value="{%if category.description%}{{category.description}}{%endif%}">
-                            </div>
-                        {%if 'items' in category%}
-                            {%for item in category['items']%}
-                                <div class="accordion" id="itemsAccordion_{{category._id}}">
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne_{{item._id}}">
-                                          <h2 class="mb-0">
-                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne_{{item._id}}" aria-expanded="true" aria-controls="collapseOne_{{item._id}}">
-                                              {{item.label}}
-                                            </button>
-                                          </h2>
-                                        </div>
-                                        <div id="collapseOne_{{item._id}}" class="collapse" aria-labelledby="headingOne_{{item._id}}" data-parent="#itemsAccordion_{{category._id}}">
-                                            <div class="card-body">
-                                                <div class="accordion" id="itemsAccordion_{{category._id}}">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label col-form-label-sm" for="itemDescription_{{item._id}}">{{item.label}} description</label>
-                                                        <input class="form-control form-control-sm" type="text" id="itemDescription_{{item._id}}" placeholder="{{item.label}} description" value="{%if 'description' in item%}{%if item.description%}{{item.description}}{%endif%}{%endif%}">
+            </div>
+            <hr>
+            <h3>Categories</h3>
+            <div class="accordion" id="categoriesAccordion">
+                {%for category in menu['categories']%}
+                <div class="card">
+                    <div class="card-header" id="headingOne_{{category._id}}">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne_{{category._id}}" aria-expanded="true" aria-controls="collapseOne_{{category._id}}">
+                          {{category.label}}
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseOne_{{category._id}}" class="collapse" aria-labelledby="headingOne_{{category._id}}" data-parent="#categoriesAccordion">
+                        <div class="card-body">
+                            <div class="accordion" id="itemsAccordion_{{category._id}}">
+                                <div class="form-group">
+                                    <label class="col-form-label col-form-label-sm" for="categoryDescription_{{category._id}}">{{category.label}} description</label>
+                                    <input class="form-control form-control-sm" type="text" id="categoryDescription_{{category._id}}" placeholder="{{category.label}} description" value="{%if category.description%}{{category.description}}{%endif%}">
+                                </div>
+                            {%if 'items' in category%}
+                                {%for item in category['items']%}
+                                    <div class="accordion" id="itemsAccordion_{{category._id}}">
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne_{{item._id}}">
+                                              <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne_{{item._id}}" aria-expanded="true" aria-controls="collapseOne_{{item._id}}">
+                                                  {{item.label}}
+                                                </button>
+                                              </h2>
+                                            </div>
+                                            <div id="collapseOne_{{item._id}}" class="collapse" aria-labelledby="headingOne_{{item._id}}" data-parent="#itemsAccordion_{{category._id}}">
+                                                <div class="card-body">
+                                                    <div class="accordion" id="itemsAccordion_{{category._id}}">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label col-form-label-sm" for="itemDescription_{{item._id}}">{{item.label}} description</label>
+                                                            <input class="form-control form-control-sm" type="text" id="itemDescription_{{item._id}}" placeholder="{{item.label}} description" value="{%if 'description' in item%}{%if item.description%}{{item.description}}{%endif%}{%endif%}">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            {%endfor%}
-                        {%endif%}
+                                {%endfor%}
+                            {%endif%}
+                            </div>
                         </div>
                     </div>
                 </div>
+                 {%endfor%}
             </div>
-             {%endfor%}
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-block form-control-lg btn-outline-primary" type="submit"><span class="fa fa-save"></span> Save Menu</button>
         </div>
     </div>
-</div>
+</form>
 {% endblock %}

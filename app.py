@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, flash, render_template, flash, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
@@ -172,7 +172,15 @@ def account_get_menu(menu_id):
 
 @app.route("/account/menu/<menu_id>", methods=['POST'])
 def account_edit_menu(menu_id):
-    return "EDIT MENU "+menu_id
+    menus.update_one(
+        {'_id': ObjectId(menu_id)},
+        {'$set': { 'label': request.form.get('label') } }
+        )
+    flash(u'Menu saved successfully.', 'success')
+    return redirect(url_for('account_get_menu',
+    menu_id = menu_id
+    )
+    )
 
 @app.route("/account/menu/<menu_id>", methods=['DELETE'])
 def account_delete_menu(menu_id):
