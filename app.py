@@ -170,9 +170,9 @@ def account_get_menu(menu_id):
     menu = menu
     )
 
-@app.route("/account/menu/<menu_id>", methods=['PUT'])
+@app.route("/account/menu/<menu_id>", methods=['POST'])
 def account_edit_menu(menu_id):
-    return "PUT menu "+menu_id
+    return "EDIT MENU "+menu_id
 
 @app.route("/account/menu/<menu_id>", methods=['DELETE'])
 def account_delete_menu(menu_id):

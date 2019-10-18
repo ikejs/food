@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="/javascripts/account_menu.js"></script>
 <title>{{title}}</title>
 <div class='row'>
     {% include 'partials/account_nav.html' %}
-    <div class="col-md-8">
-        <legend class="row" style="margin-bottom:-20px;">
-            <div class="col-md-1" style="margin-top:5px;">
-                <small><a href="/account/menus"><span class="fa fa-arrow-left"></span></a></small>
+    <div class="col-md-1" style="margin-top:5px;">
+        <a href="/account/menus"><span class="fa fa-arrow-left"></span></a>
+    </div>
+    <div class="col-md-7">
+        <div class="row">
+            <legend style="margin-bottom:-20px;">
+                <div class="form-group">
+                    <input class="form-control form-control-lg" type="text" value="{{menu['label']}}">
+                </div>
+            </legend>
+            <div class="form-group">
+              <label class="col-form-label col-form-label-sm" for="menuDescription"></label>
+              <input class="form-control form-control-sm" type="text" id="menuDescription" placeholder="Menu description" value="{{menu['description']}}">
             </div>
-            <div class="form-group col-md-11">
-              <input class="form-control form-control-lg" type="text" placeholder="Menu Name" value="{{menu['label']}}">
-            </div>
-        </legend>
-        <div class="ellipsis">
-            <small>dffjykguh esriuhg siug si ergh si gu isrug iserug iseu bfjyfbj reuhsg uerg seruig siuerhg su erg iseurghius rg sireuhgis erg sur ghis eri ytby</small>
-            <a href="javascript:showEditField('menuDescription')"><span class="fa fa-pencil"></span></a>
-        </div>
-        <div class="form-group">
-          <label class="col-form-label col-form-label-sm" for="menuDescription"></label>
-          <input class="form-control form-control-sm" type="text" id="menuDescription" placeholder="Menu description" value="{{menu['description']}}">
         </div>
         <hr>
         <h3>Categories</h3>
