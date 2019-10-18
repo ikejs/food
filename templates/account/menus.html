@@ -39,7 +39,11 @@
           <form action="/account/menus" method="POST">
               <div class='form-group'>
                   <label for='menu-name'>Name</label><br>
-                  <input class='form-control' id='menuName' type='text' name='menuName' placeholder="Breakfast Menu"/>
+                  <input class='form-control' id='menuName' type='text' name='menuName' placeholder="" autocomplete="off" />
+              </div>
+              <div class='form-group'>
+                  <label for='menu-name'>Description</label><br>
+                  <input class='form-control' id='menuDescription' type='text' name='menuDescription' placeholder="" autocomplete="off" />
               </div>
               <div class='form-group'>
                   <button class='btn btn-outline-primary btn-block' type='submit'>Add Menu</button>

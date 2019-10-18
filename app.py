@@ -143,7 +143,7 @@ def account_view_menus():
 
 @app.route("/account/menus", methods=['POST'])
 def account_add_menu():
-    menus.insert_one({ 'label': request.form.get('menuName') })
+    menus.insert_one({ 'label': request.form.get('menuName'), 'description': request.form.get('menuDescription'), 'categories': [] })
     flash(b'Menu added successfully.', 'success')
     return redirect(url_for('account_view_menus'))
 
@@ -154,7 +154,7 @@ def account_add_category():
     newCategoryDescription = request.form.get('categoryDescription')
     menus.update(
        { '_id': ObjectId(menuId) },
-       { '$push': { 'categories': { 'label': newCategoryLabel, 'description': newCategoryDescription, 'items': [] } } }
+       { '$push': { 'categories': { '_id': ObjectId(), 'label': newCategoryLabel, 'description': newCategoryDescription, 'items': [] } } }
     )
     flash(b'Category added successfully.', 'success')
     return redirect(url_for('account_get_menu', menu_id=menuId))
@@ -182,9 +182,20 @@ def account_get_menu(menu_id):
 
 @app.route("/account/menu/<menu_id>", methods=['POST'])
 def account_edit_menu(menu_id):
+    menu = menus.find_one({ '_id': ObjectId(menu_id) })
+    updatedCategories = []
+    for category in menu['categories']:
+        updatedCategories.append({
+        '_id': ObjectId(category['_id']),
+        'label': request.form.get('categoryLabel_'+str(category['_id'])),
+        'description': request.form.get('categoryDescription_'+str(category['_id'])),
+        'items': []
+        })
+    print(updatedCategories)
     updatedMenu = {
         'label': request.form.get('menuLabel'),
-        'description': request.form.get('menuDescription')
+        'description': request.form.get('menuDescription'),
+        'categories': updatedCategories
     }
     menus.update_one(
         {'_id': ObjectId(menu_id)},
