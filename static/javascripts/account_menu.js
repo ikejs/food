@@ -65,7 +65,7 @@ function addNewItemOptionSingleValue(option_id) {
                     <input type="radio" id="newItemOptionSingleValue_${value_id}" name="newItemOptionSingleValue_${option_id}" />
                 </div>
                 <div class="form-group col-md-6" style="float:left;">
-                    <input class='form-control form-control-sm' id='' type='text' name='' placeholder="Value name" autocomplete="off" />
+                    <input class='form-control form-control-sm' id='' type='text' name='newItemOptionSingleValueLabel_${value_id}' placeholder="Value name" autocomplete="off" />
                 </div>
                 <div class='form-group col-md-4' style="float:right;">
                   <div class="form-group">
@@ -73,7 +73,7 @@ function addNewItemOptionSingleValue(option_id) {
                       <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                       </div>
-                      <input placeholder="0.00" class="form-control form-control-sm dollarAmount" value="0.00" />
+                      <input placeholder="0.00" class="form-control form-control-sm dollarAmount" value="0.00" name="newItemOptionSingleValuePrice_${value_id}" />
                     </div>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ function addNewItemOptionMultipleValue(option_id) {
                     <input type="checkbox" id="newItemOptionMultipleValue_${value_id}" name="newItemOptionMultipleValue_${value_id}" />
                 </div>
                 <div class="form-group col-md-6" style="float:left;">
-                    <input class='form-control form-control-sm' id='' type='text' name='' placeholder="Value name" autocomplete="off" />
+                    <input class='form-control form-control-sm' id='' type='text' name='newItemOptionMultipleValueLabel_${value_id}' placeholder="Value name" autocomplete="off" />
                 </div>
                 <div class='form-group col-md-4' style="float:right;">
                   <div class="form-group">
@@ -102,7 +102,7 @@ function addNewItemOptionMultipleValue(option_id) {
                       <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                       </div>
-                      <input placeholder="0.00" class="form-control form-control-sm dollarAmount" value="0.00" />
+                      <input placeholder="0.00" class="form-control form-control-sm dollarAmount" value="0.00" name="newItemOptionMultipleValuePrice_${value_id}" />
                     </div>
                   </div>
                 </div>
@@ -143,16 +143,8 @@ function newItemOptionTypeMultiple(option_id) {
 
 
 $(function() {
-    addItem('5da95a5d0748a9b3f563d06d') //TEST
-    addNewItemOption();
-    //
-    // $("#multiPricingSwitch").change(function() {
-    //     if(this.checked) {
-    //
-    //     } else {
-    //
-    //     }
-    // });
+    // addItem('5da95a5d0748a9b3f563d06d') //TEST
+    // addNewItemOption();
 
     $( ".dollarAmount" ).focusout(function() {
         $(this).val(accounting.formatMoney($(this).val()).replace('$', ''));

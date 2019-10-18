@@ -38,7 +38,7 @@
                       </h2>
                     </div>
                     <div id="collapseOne_{{category._id}}" class="collapse" aria-labelledby="headingOne_{{category._id}}" data-parent="#categoriesAccordion">
-                        <a href="javascript:addItem('{{category._id}}')" style="float:right;margin:20px;"><small>add item</small></a>
+                        <a href="javascript:addItem('{{category._id}}')" style="float:right;margin:20px;"><span class="fa fa-plus"></span></a>
                         <div class="card-body col-md-9 offset-md-2">
                             <div class="accordion" id="itemsAccordion_{{category._id}}">
                             {%if 'items' in category%}
@@ -137,11 +137,11 @@
               <input style="display:none;" name="categoryId" id="categoryIdForNewItem" value="" />
               <div class='form-group'>
                   <label required for='item-name'>Name</label><br>
-                  <input class='form-control' id='itemName' type='text' name='itemName' autocomplete="off" />
+                  <input class='form-control' id='newItemName' type='text' name='newItemName' autocomplete="off" />
               </div>
               <div class='form-group'>
                   <label for='menu-name'>Description</label><br>
-                  <textarea class='form-control form-control-sm' id='itemDescription' type='text' name='itemDescription' autocomplete="off"></textarea>
+                  <textarea class='form-control form-control-sm' id='newItemDescription' type='text' name='newItemDescription' autocomplete="off"></textarea>
               </div>
               <h5 style="margin-top:40px;">Options <a href="javascript:addNewItemOption()" style="float:right;"><span class="fa fa-plus"></span></a></h5>
               <!-- <div class="custom-control custom-switch">

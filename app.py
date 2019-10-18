@@ -152,6 +152,7 @@ def account_add_category():
     menuId = request.form.get('menuId')
     newCategoryLabel = request.form.get('categoryName')
     newCategoryDescription = request.form.get('categoryDescription')
+    print(json.dumps(request.form)) # PRINT WHAT THE RESPONSE LOOKS LIKE, STORE ITEM OPTIONS CORRECTLY...
     menus.update(
        { '_id': ObjectId(menuId) },
        { '$push': { 'categories': { '_id': ObjectId(), 'label': newCategoryLabel, 'description': newCategoryDescription, 'items': [] } } }
@@ -160,15 +161,21 @@ def account_add_category():
     return redirect(url_for('account_get_menu', menu_id=menuId))
 
 
-@app.route("/account/menu/create", methods=['POST'])
-def account_create_menu():
-    menu = {
-        "name": request.form.get('name'),
-        "categories": [],
-        "items": []
-    }
-    menus.append(menu)
-    return redirect(url_for('account_view_menus', menu=menus[0]))
+@app.route("/account/menus/newItem", methods=['POST'])
+def account_add_item():
+    print(request.form)
+    menuId = request.form.get('menuId')
+    categoryId = request.form.get('categoryId')
+    label = request.form.get('newItemName')
+    description = request.form.get('newItemDescription')
+
+    menus.update(
+       { '_id': ObjectId(menuId), 'categories._id': ObjectId(categoryId) },
+       { '$push': { 'categories.$.items': { '_id': ObjectId(), 'label': label, 'description': description, 'options': [] } } }
+    )
+    flash(b'Item added successfully.', 'success')
+    return redirect(url_for('account_get_menu', menu_id=menuId))
+
 
 @app.route("/account/menu/<menu_id>")
 def account_get_menu(menu_id):
