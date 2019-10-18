@@ -78,7 +78,7 @@ function addNewItemOptionSingleValue(option_id) {
                 <div class="form-group col-md-6" style="float:left;">
                     <input class='form-control form-control-sm' id='' type='text' name='newItemOptionSingleValueLabel_${value_id}' placeholder="Value name" autocomplete="off" />
                 </div>
-                <div class='form-group col-md-4' style="float:right;">
+                <div class='form-group col-md-4' style="float:left;margin-left:0px;">
                   <div class="form-group">
                     <div class="input-group input-group-sm mb-2">
                       <div class="input-group-prepend">
@@ -88,7 +88,7 @@ function addNewItemOptionSingleValue(option_id) {
                     </div>
                   </div>
                 </div>
-                <div class="col-md-1" style="float:left;padding-right:0px;">
+                <div class="col-md-1" style="float:right;padding-right:0px;">
                     <a style="float:right;" class="text-danger" href="javascript:removeNewItemOptionValue('${value_id}')"><span class="fa fa-minus-circle"></a>
                 </div>
             </div>

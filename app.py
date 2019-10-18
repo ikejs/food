@@ -14,37 +14,10 @@ menus = db['menus']
 
 app = Flask(__name__, static_url_path='')
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-title = " | Food"
+title = " | Food" # Dynamic titles
 
 
-# users = db.users
-# restaurants = db.restaurants
-# menus = db.menus
-# orders = db.orders
-
-
-# users = [
-#     {
-#         "_id": "fakeUserId1234567",
-#         "name": "Ike Holzmann",
-#         "email": "ikeholzmann@gmail.com",
-#         "phone": "19202519700",
-#         "addresses": [],
-#         "type": "seller"
-#     },
-#     {
-#         "_id": "fakeUserId7654321",
-#         "name": "Bill Smith",
-#         "email": "bill@smith.com",
-#         "phone": "19202519696",
-#         "addresses": [
-#             { "street": "851 California St", "city": "San Francisco", "state": "CA", "zip": "94108" },
-#             { "street": "26 Glenwood Ct", "city": "Fond du Lac", "state": "WI", "zip": "54935" }
-#         ],
-#         "type": "buyer"
-#     }
-# ]
-#
+# Test restaurant without auth
 restaurants = [
     {
         "_id": "fakeRestaurantId1234567",
@@ -56,84 +29,11 @@ restaurants = [
         "sellers": ["fakeUserId1234567"]
     }
 ]
-#
-# menus = [
-#     {
-#         "_id": "fakeMenuId1234567",
-#         "name": "Lunch Menu",
-#         "categories": [
-#             { "_id": "fakeCategoryId1", "name": "Burgers" },
-#             { "_id": "fakeCategoryId2", "name": "Fries" },
-#             { "_id": "fakeCategoryId3", "name": "Shakes" },
-#             { "_id": "fakeCategoryId4", "name": "Desserts" }
-#         ],
-#         "items": [
-#             {
-#                 "categories": ["fakeCategoryId1"],
-#                 "name": "Big Ol Burger",
-#                 "description": "This burger is really big, bro.",
-#                 "price": 8.95,
-#                 "image": "https://assets.bonappetit.com/photos/5d1cb1880813410008e914fc/16:9/w_1200,c_limit/Print-Summer-Smash-Burger.jpg",
-#                 "modifiers": [],
-#                 "variations": [],
-#                 "addons": [
-#                     { "name": "Add Cheese", "price": 1.99 },
-#                     { "name": "Add Onions", "price": 0.99 }
-#                 ]
-#             },
-#             {
-#                 "categories": ["fakeCategoryId1"],
-#                 "name": "Lil Burger",
-#                 "description": "This burger is really pretty small, bro.",
-#                 "price": 4.95,
-#                 "image": "https://media.istockphoto.com/photos/small-burger-picture-id660640390",
-#                 "modifiers": [],
-#                 "variations": [],
-#                 "addons": [
-#                     { "name": "Add Cheese", "price": 0.99 },
-#                     { "name": "Add Onions", "price": 0.40 }
-#                 ]
-#             },
-#             {
-#                 "categories": ["fakeCategoryId2"],
-#                 "name": "Fries",
-#                 "description": "These are some sweet potato fries.",
-#                 "price": 3.99,
-#                 "image": "https://www.iheartnaptime.net/wp-content/uploads/2018/05/sweet-potato-fries.jpg",
-#                 "modifiers": [],
-#                 "variations": [
-#                     { "name": "Regular", "price": 0.00 },
-#                     { "name": "Sweet Potato", "price": 0.00 }
-#                 ],
-#                 "addons": [
-#                     { "name": "Add Ketchup", "price": 0.99 }
-#                 ]
-#             },
-#             {
-#                 "categories": ["fakeCategoryId3", "fakeCategoryId4"],
-#                 "name": "Famous Shake",
-#                 "description": "This is a really good shake.",
-#                 "price": 0,
-#                 "image": "https://media2.s-nbcnews.com/i/newscms/2017_20/1214849/shake-shack-chocolate-shake-today-170510-tease_05e84fb9d50c206919acf687070b7a09.jpg",
-#                 "modifiers": [
-#                     { "name": "Small", "price": 3.99 },
-#                     { "name": "Medium", "price": 4.99 },
-#                     { "name": "Large", "price": 5.99 }
-#                 ],
-#                 "variations": [
-#                     { "name": "Vanilla", "price": 0.00 },
-#                     { "name": "Chocolate", "price": 0.00 },
-#                     { "name": "Strawberry", "price": 0.30 }
-#                 ],
-#                 "addons": []
-#             }
-#         ]
-#     }
-# ]
 
 
-# CRUD MENU
+
 @app.route("/account/menus")
+''''Get restaurant menus for backdoor''''
 def account_view_menus():
     return render_template(
     'account/menus.html',
@@ -142,12 +42,14 @@ def account_view_menus():
     )
 
 @app.route("/account/menus", methods=['POST'])
+''''Add new menu from backdoor, return to menus view''''
 def account_add_menu():
     menus.insert_one({ 'label': request.form.get('menuName'), 'description': request.form.get('menuDescription'), 'categories': [] })
     flash(b'Menu added successfully.', 'success')
     return redirect(url_for('account_view_menus'))
 
 @app.route("/account/menus/newCategory", methods=['POST'])
+''''Add mew category from backdoor, redirect to the menu that holds the category.''''
 def account_add_category():
     menuId = request.form.get('menuId')
     newCategoryLabel = request.form.get('categoryName')
@@ -161,8 +63,10 @@ def account_add_category():
 
 
 @app.route("/account/menus/newItem", methods=['POST'])
+''''Add new item from backdoor, return to menu that holds item''''
+
 def account_add_item():
-    print(request.form) # PRINT WHAT THE RESPONSE LOOKS LIKE, STORE ITEM OPTIONS CORRECTLY...
+    print(request.form) # VIEW PRINT RESPONSE, STORE ITEM OPTIONS CORRECTLY...
     menuId = request.form.get('menuId')
     categoryId = request.form.get('categoryId')
     label = request.form.get('newItemName')
@@ -177,6 +81,7 @@ def account_add_item():
 
 
 @app.route("/account/menu/<menu_id>")
+''''Add new menu from backdoor, return to menus view''''
 def account_get_menu(menu_id):
     menu = menus.find_one({ '_id': ObjectId(menu_id) })
     return render_template(
@@ -187,6 +92,7 @@ def account_get_menu(menu_id):
     )
 
 @app.route("/account/menu/<menu_id>", methods=['POST'])
+''''Update menu details from backdoor, return to menu page''''
 def account_edit_menu(menu_id):
     menu = menus.find_one({ '_id': ObjectId(menu_id) })
     updatedCategories = []
@@ -213,6 +119,7 @@ def account_edit_menu(menu_id):
     )
 
 @app.route("/account/menus/delete", methods=['POST'])
+''''Delete menu from backdoor, return to menus view''''
 def account_delete_menu():
     menus.delete_one({'_id': ObjectId(request.form.get('menuId')) })
     flash(u'Menu deleted successfully.', 'info')
@@ -220,6 +127,7 @@ def account_delete_menu():
 
 
 @app.route("/account/menus/deleteCategory", methods=['POST'])
+''''Delete menu category from backdoor, return to the menu page it belonged to''''
 def account_delete_category():
     menus.update_one(
         {'_id': ObjectId(request.form.get('menuId'))},
@@ -234,12 +142,10 @@ def account_delete_category():
 
 
 @app.route("/account/getObjectId", methods=['POST'])
+''''Send ObjectIds to client for creating menu item modifiers''''
 def generate_objectId():
     object = ObjectId()
     return str(object)
-
-
-
 
 
 
