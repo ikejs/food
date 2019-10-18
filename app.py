@@ -33,8 +33,10 @@ restaurants = [
 
 
 @app.route("/account/menus")
-''''Get restaurant menus for backdoor''''
 def account_view_menus():
+    '''
+    Add new menu from backdoor, return to menus view
+    '''
     return render_template(
     'account/menus.html',
     restaurant = restaurants[0],
@@ -42,15 +44,19 @@ def account_view_menus():
     )
 
 @app.route("/account/menus", methods=['POST'])
-''''Add new menu from backdoor, return to menus view''''
 def account_add_menu():
+    '''
+    Add new menu from backdoor, return to menus view
+    '''
     menus.insert_one({ 'label': request.form.get('menuName'), 'description': request.form.get('menuDescription'), 'categories': [] })
     flash(b'Menu added successfully.', 'success')
     return redirect(url_for('account_view_menus'))
 
 @app.route("/account/menus/newCategory", methods=['POST'])
-''''Add mew category from backdoor, redirect to the menu that holds the category.''''
 def account_add_category():
+    '''
+    Add mew category from backdoor, redirect to the menu that holds the category.
+    '''
     menuId = request.form.get('menuId')
     newCategoryLabel = request.form.get('categoryName')
     newCategoryDescription = request.form.get('categoryDescription')
@@ -63,9 +69,10 @@ def account_add_category():
 
 
 @app.route("/account/menus/newItem", methods=['POST'])
-''''Add new item from backdoor, return to menu that holds item''''
-
 def account_add_item():
+    '''
+    Add new item from backdoor, return to menu that holds item
+    '''
     print(request.form) # VIEW PRINT RESPONSE, STORE ITEM OPTIONS CORRECTLY...
     menuId = request.form.get('menuId')
     categoryId = request.form.get('categoryId')
@@ -81,8 +88,10 @@ def account_add_item():
 
 
 @app.route("/account/menu/<menu_id>")
-''''Add new menu from backdoor, return to menus view''''
 def account_get_menu(menu_id):
+    '''
+    Add new menu from backdoor, return to menus view
+    '''
     menu = menus.find_one({ '_id': ObjectId(menu_id) })
     return render_template(
     'account/menu_edit.html',
@@ -92,8 +101,10 @@ def account_get_menu(menu_id):
     )
 
 @app.route("/account/menu/<menu_id>", methods=['POST'])
-''''Update menu details from backdoor, return to menu page''''
 def account_edit_menu(menu_id):
+    '''
+    Update menu details from backdoor, return to menu page
+    '''
     menu = menus.find_one({ '_id': ObjectId(menu_id) })
     updatedCategories = []
     for category in menu['categories']:
@@ -119,16 +130,20 @@ def account_edit_menu(menu_id):
     )
 
 @app.route("/account/menus/delete", methods=['POST'])
-''''Delete menu from backdoor, return to menus view''''
 def account_delete_menu():
+    '''
+    Delete menu from backdoor, return to menus view
+    '''
     menus.delete_one({'_id': ObjectId(request.form.get('menuId')) })
     flash(u'Menu deleted successfully.', 'info')
     return redirect(url_for('account_view_menus'))
 
 
 @app.route("/account/menus/deleteCategory", methods=['POST'])
-''''Delete menu category from backdoor, return to the menu page it belonged to''''
 def account_delete_category():
+    '''
+    Delete menu category from backdoor, return to the menu page it belonged to
+    '''
     menus.update_one(
         {'_id': ObjectId(request.form.get('menuId'))},
         { '$pull': { "categories" : { '_id': ObjectId(request.form.get('categoryId')) } } }, False, True
@@ -142,8 +157,10 @@ def account_delete_category():
 
 
 @app.route("/account/getObjectId", methods=['POST'])
-''''Send ObjectIds to client for creating menu item modifiers''''
 def generate_objectId():
+    '''
+    Send ObjectIds to client for creating menu item modifiers
+    '''
     object = ObjectId()
     return str(object)
 
