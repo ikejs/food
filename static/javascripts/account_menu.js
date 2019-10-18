@@ -14,6 +14,17 @@ function deleteMenu(menuId) {
     return false;
 }
 
+function deleteCategory(categoryId) {
+    $("#categoryIdToDelete").val(categoryId);
+    console.log(categoryId)
+    if (confirm('Are you sure you want to delete this category?')) {
+        if (confirm('It will be permanently erased. This action is irreversible.')) {
+            $("#deleteCategoryForm").submit();
+        }
+    }
+    return false;
+}
+
 function addItem(categoryId) {
     $("#categoryIdForNewItem").val(categoryId);
     $("#categoryNameForNewItem").html('in ' + $("#categoryLabel_"+categoryId).val());

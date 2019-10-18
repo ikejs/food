@@ -152,7 +152,6 @@ def account_add_category():
     menuId = request.form.get('menuId')
     newCategoryLabel = request.form.get('categoryName')
     newCategoryDescription = request.form.get('categoryDescription')
-    print(json.dumps(request.form)) # PRINT WHAT THE RESPONSE LOOKS LIKE, STORE ITEM OPTIONS CORRECTLY...
     menus.update(
        { '_id': ObjectId(menuId) },
        { '$push': { 'categories': { '_id': ObjectId(), 'label': newCategoryLabel, 'description': newCategoryDescription, 'items': [] } } }
@@ -163,7 +162,7 @@ def account_add_category():
 
 @app.route("/account/menus/newItem", methods=['POST'])
 def account_add_item():
-    print(request.form)
+    print(request.form) # PRINT WHAT THE RESPONSE LOOKS LIKE, STORE ITEM OPTIONS CORRECTLY...
     menuId = request.form.get('menuId')
     categoryId = request.form.get('categoryId')
     label = request.form.get('newItemName')
@@ -198,7 +197,6 @@ def account_edit_menu(menu_id):
         'description': request.form.get('categoryDescription_'+str(category['_id'])),
         'items': []
         })
-    print(updatedCategories)
     updatedMenu = {
         'label': request.form.get('menuLabel'),
         'description': request.form.get('menuDescription'),
@@ -219,6 +217,21 @@ def account_delete_menu():
     menus.delete_one({'_id': ObjectId(request.form.get('menuId')) })
     flash(u'Menu deleted successfully.', 'info')
     return redirect(url_for('account_view_menus'))
+
+
+@app.route("/account/menus/deleteCategory", methods=['POST'])
+def account_delete_category():
+    menus.update_one(
+        {'_id': ObjectId(request.form.get('menuId'))},
+        { '$pull': { "categories" : { '_id': ObjectId(request.form.get('categoryId')) } } }, False, True
+    );
+    flash(u'Category deleted successfully.', 'info')
+    return redirect(url_for('account_get_menu',
+    menu_id = request.form.get('menuId')
+    )
+    )
+
+
 
 @app.route("/account/getObjectId", methods=['POST'])
 def generate_objectId():

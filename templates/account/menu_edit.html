@@ -31,11 +31,14 @@
                           <button onclick="expandButtonToggle({{category._id}})" class="btn btn-link col-md-1" style="float:left;" type="button" data-toggle="collapse" data-target="#collapseOne_{{category._id}}" aria-expanded="true" aria-controls="collapseOne_{{category._id}}">
                             <span class="fa fa-expand"></span>
                           </button>
-                          <div class="form-group col-md-11" style="float:right;">
+                          <div class="form-group col-md-10" style="float:left;">
                               <input class="form-control" type="text" value="{{category.label}}" name="categoryLabel_{{category._id}}" id="categoryLabel_{{category._id}}" placeholder="Category Name" autocomplete="off" />
                               <input class="form-control form-control-sm" type="text" name="categoryDescription_{{category._id}}" id="categoryDescription_{{category._id}}" placeholder="{%if category.label%}{{category.label}} description{%else%}Category description{%endif%}" value="{%if category.description%}{{category.description}}{%endif%}" autocomplete="off" />
                           </div>
                       </h2>
+                      <div class="col-md-1" style="float:right;margin-top:20px;">
+                          <a class="text-danger" href="javascript:deleteCategory('{{category._id}}')"><span class="fa fa-minus-circle"></span></a>
+                      </div>
                     </div>
                     <div id="collapseOne_{{category._id}}" class="collapse" aria-labelledby="headingOne_{{category._id}}" data-parent="#categoriesAccordion">
                         <a href="javascript:addItem('{{category._id}}')" style="float:right;margin:20px;"><span class="fa fa-plus"></span></a>
@@ -82,9 +85,16 @@
         </div>
     </div>
 </form>
+
 <form style="display:none;" id="deleteMenuForm" action="/account/menus/delete" method="POST">
     <input name="menuId" value="{{menu['_id']}}" />
     <button type="submit">DELETE MENU</button>
+</form>
+
+<form style="display:none;" id="deleteCategoryForm" action="/account/menus/deleteCategory" method="POST">
+    <input name="menuId" value="{{menu._id}}"/>
+    <input id="categoryIdToDelete" name="categoryId"></input>
+    <button type="submit">DELETE CATEGORY</button>
 </form>
 
 
