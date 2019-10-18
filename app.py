@@ -147,14 +147,18 @@ def account_add_menu():
     flash(b'Menu added successfully.', 'success')
     return redirect(url_for('account_view_menus'))
 
-@app.route("/account/menu/create")
-def account_create_category_form():
-    return render_template(
-    'account/category_create.html',
-    title = 'Create Category' + title,
-    restaurant = restaurants[0],
-    menu = {}
+@app.route("/account/menus/newCategory", methods=['POST'])
+def account_add_category():
+    menuId = request.form.get('menuId')
+    newCategoryLabel = request.form.get('categoryName')
+    newCategoryDescription = request.form.get('categoryDescription')
+    menus.update(
+       { '_id': ObjectId(menuId) },
+       { '$push': { 'categories': { 'label': newCategoryLabel, 'description': newCategoryDescription, 'items': [] } } }
     )
+    flash(b'Category added successfully.', 'success')
+    return redirect(url_for('account_get_menu', menu_id=menuId))
+
 
 @app.route("/account/menu/create", methods=['POST'])
 def account_create_menu():
@@ -178,9 +182,13 @@ def account_get_menu(menu_id):
 
 @app.route("/account/menu/<menu_id>", methods=['POST'])
 def account_edit_menu(menu_id):
+    updatedMenu = {
+        'label': request.form.get('menuLabel'),
+        'description': request.form.get('menuDescription')
+    }
     menus.update_one(
         {'_id': ObjectId(menu_id)},
-        {'$set': { 'label': request.form.get('label') } }
+        {'$set': updatedMenu }
         )
     flash(u'Menu saved successfully.', 'success')
     return redirect(url_for('account_get_menu',
